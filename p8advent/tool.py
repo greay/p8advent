@@ -73,7 +73,7 @@ def main(orig_args):
 
     my_game = game.Game.make_empty_game(filename=game_fname)
     my_lexer = lexer.Lexer(version=4)
-    with open(args.lua) as lua_fh:
+    with open(args.lua, 'rb') as lua_fh:
         my_lexer.process_lines(lua_fh)
 
     my_textlib = lzwlib.LzwLib(start_addr=args.startaddr, end_addr=args.endaddr)
@@ -90,8 +90,8 @@ def main(orig_args):
         else:
             saw_star = False
 
-    textlib_lua = my_textlib.generate_lua()
-    my_lexer.process_lines(l+'\n' for l in textlib_lua.split('\n'))
+    textlib_lua = str.encode(my_textlib.generate_lua())
+    my_lexer.process_lines([(l + b'\n') for l in textlib_lua.split(b'\n')])
 
     my_game.lua._lexer = my_lexer
     my_game.lua._parser.process_tokens(my_game.lua._lexer.tokens)
@@ -99,7 +99,7 @@ def main(orig_args):
     text_bytes = my_textlib.as_bytes()
     my_game.write_cart_data(text_bytes, args.startaddr)
 
-    with open(game_fname, 'w') as outstr:
+    with open(game_fname, 'wb') as outstr:
         my_game.to_p8_file(outstr, filename=game_fname)
 
     return 0
