@@ -80,12 +80,12 @@ def main(orig_args):
 
     saw_star = False
     for i, token in enumerate(my_lexer._tokens):
-        if token.matches(lexer.TokSymbol('*')):
+        if token.matches(lexer.TokSymbol(b'*')):
             saw_star = True
         elif token.matches(lexer.TokString) and saw_star:
-            sid = my_textlib.id_for_string(token.value)
-            my_lexer._tokens[i-1] = lexer.TokSpace('')
-            my_lexer._tokens[i] = lexer.TokString(sid)
+            sid = my_textlib.id_for_string(token.value.decode())
+            my_lexer._tokens[i-1] = lexer.TokSpace(b'')
+            my_lexer._tokens[i] = lexer.TokString(str.encode(sid))
             saw_star = False
         else:
             saw_star = False
