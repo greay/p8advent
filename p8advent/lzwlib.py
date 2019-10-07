@@ -93,7 +93,7 @@ function _t(s)
     elseif _tl.d[c-#_tl.t+1]~=nil then
      r=_tl.d[c-#_tl.t+1]
     end
-    if p~=nil and #_tl.d+#_tl.t<tl.mt then
+    if p~=nil and #_tl.d+#_tl.t<_tl.mt then
      if r~=nil then
       _tl.d[#_tl.d+1]=p..sub(r,1,1)
      else
